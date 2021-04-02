@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author macrusal on 02/04/21
  * @project rest-aws
@@ -25,5 +27,10 @@ public class PessoaController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Pessoa get( @PathVariable("id") String id ) {
         return pessoaService.findById( id );
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Pessoa> getAll(  ) {
+        return pessoaService.findAll( );
     }
 }
