@@ -1,11 +1,13 @@
 package br.com.hibejix.restaws.pessoa.service;
 
+import br.com.hibejix.restaws.pessoa.exception.PessoaNotFoundException;
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
+import br.com.hibejix.restaws.pessoa.repository.PessoaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author macrusal on 02/04/21
@@ -14,57 +16,51 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class PessoaService {
 
-    private final AtomicLong counter = new AtomicLong();
+    private static final Logger logger = LoggerFactory.getLogger(PessoaService.class);
 
-    public Pessoa create(Pessoa pessoa) {
-        return pessoa;
+    private PessoaRepository pessoaRepository;
+
+    public PessoaService( PessoaRepository pessoaRepository ) {
+        this.pessoaRepository = pessoaRepository;
     }
 
-    public Pessoa update(Pessoa pessoa) {
-        return pessoa;
+    public Pessoa create( Pessoa pessoa) {
+        logger.info( "Criando pessoa: {}", pessoa.toString() );
+        return pessoaRepository.save( pessoa );
+    }
+
+    public Pessoa update(Pessoa parametro) {
+
+        var pessoa = findById( parametro.getId() );
+        logger.info("Atualizando pessoa com o id: {}", parametro.getId());
+
+        return pessoaRepository.save( pessoa.builder()
+                .id( parametro.getId() )
+                .primeiroNome( parametro.getPrimeiroNome() )
+                .ultimoNome( parametro.getUltimoNome() )
+                .sexo( parametro.getSexo() )
+                .endereco( parametro.getEndereco() )
+                .build()
+        );
     }
 
     public void delete( String id ) {
+        var pessoa = findById( id );
+        logger.info("Excluindo pessoa com o id: {}", id);
+        pessoaRepository.deleteById( pessoa.getId() );
     }
 
     public Pessoa findById(String id) {
-        var pessoa = Pessoa.builder()
-                .id(counter)
-                .primeiroNome( "Marcelo" )
-                .ultimoNome( "Salvador" )
-                .sexo( "Masculino" )
-                .endereco( "São Paulo - SP - Brasil" )
-                .build();
+        logger.info("Buscando pessoa com o id: {}", id);
+        var pessoa = pessoaRepository.findById( id )
+                .orElseThrow(() -> new PessoaNotFoundException("Pessoa com o id "+id+" não foi encontrada") );
         return pessoa;
     }
 
     public List<Pessoa> findAll() {
-
-        var pessoa1 = Pessoa.builder()
-                .id(counter)
-                .primeiroNome( "Marcelo" )
-                .ultimoNome( "Salvador" )
-                .sexo( "Masculino" )
-                .endereco( "São Paulo - SP - Brasil" )
-                .build();
-
-        var pessoa2 = Pessoa.builder()
-                .id(counter)
-                .primeiroNome( "Victor" )
-                .ultimoNome( "Salvador" )
-                .sexo( "Masculino" )
-                .endereco( "Rio de Janeiro - SP - Brasil" )
-                .build();
-
-        var pessoa3 = Pessoa.builder()
-                .id(counter)
-                .primeiroNome( "Dandara" )
-                .ultimoNome( "Salvador" )
-                .sexo( "Feminino" )
-                .endereco( "Minas Gerais - MG - Brasil" )
-                .build();
-
-        return Arrays.asList(pessoa1, pessoa2, pessoa3);
+        var pessoas = pessoaRepository.findAll();
+        logger.info("Retornnando {} pessoas do banco de dados", pessoas.stream().count());
+        return pessoas;
     }
 
 }

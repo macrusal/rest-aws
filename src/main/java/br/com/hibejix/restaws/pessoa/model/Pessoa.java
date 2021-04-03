@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,9 +18,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Document(collection = "pessoa")
 public class Pessoa {
 
-    private AtomicLong id;
+    @Id
+    private String id;
     private String primeiroNome;
     private String ultimoNome;
     private String endereco;

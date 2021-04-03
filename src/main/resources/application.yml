@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      database: mongo_udemy_rest_aws
+      uri: mongodb://localhost:27018/mongo_udemy_rest_aws?retryWrites=true&w=majority
