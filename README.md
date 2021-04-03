@@ -9,6 +9,7 @@ https://www.udemy.com/course/restful-apis-do-0-a-nuvem-com-springboot-e-docker
 * Spring Boot(com servidor Tomcat embarcado)
 * Lombok
 * MongoDB
+* Mongock
 * Docker
 
 
@@ -27,3 +28,9 @@ services:
 ```
 docker-compose up
 docker-compose down
+
+# Mongock
+https://www.mongock.io/
+
+https://programmingtechie.com/2021/01/16/spring-boot-mongodb-migrations-using-mongock/
+

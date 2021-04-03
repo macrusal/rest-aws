@@ -2,6 +2,7 @@ package br.com.hibejix.restaws.pessoa.controller;
 
 import br.com.hibejix.restaws.pessoa.model.dto.PessoaDTO;
 import br.com.hibejix.restaws.pessoa.service.PessoaService;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class PessoaController {
     }
 
     @RequestMapping(value = "/{id}")
-    public PessoaDTO get( @PathVariable("id") String id ) {
+    public PessoaDTO get( @PathVariable("id") ObjectId id ) {
         return pessoaService.findById( id );
     }
 
@@ -48,7 +49,7 @@ public class PessoaController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete( @PathVariable("id") String id ) {
+    public void delete( @PathVariable("id") ObjectId id ) {
         pessoaService.delete( id );
     }
 }

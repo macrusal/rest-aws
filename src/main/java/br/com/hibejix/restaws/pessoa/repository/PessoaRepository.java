@@ -1,6 +1,7 @@
 package br.com.hibejix.restaws.pessoa.repository;
 
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * @project rest-aws
  */
 @Repository
-public interface PessoaRepository extends MongoRepository< Pessoa, String > {
+public interface PessoaRepository extends MongoRepository< Pessoa, ObjectId > {
 }

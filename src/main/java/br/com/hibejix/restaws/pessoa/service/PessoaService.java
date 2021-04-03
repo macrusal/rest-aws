@@ -4,6 +4,7 @@ import br.com.hibejix.restaws.pessoa.exception.PessoaNotFoundException;
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
 import br.com.hibejix.restaws.pessoa.model.dto.PessoaDTO;
 import br.com.hibejix.restaws.pessoa.repository.PessoaRepository;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
@@ -52,14 +53,14 @@ public class PessoaService {
         return modelMapper.map( pessoaRepository.save( entity ), PessoaDTO.class );
     }
 
-    public void delete( String id ) {
+    public void delete( ObjectId id ) {
         var dto = findById( id );
         logger.info("Excluindo pessoa com o id: {}", id);
         var pessoa = modelMapper.map( dto, Pessoa.class );
         pessoaRepository.deleteById( pessoa.getId() );
     }
 
-    public PessoaDTO findById(String id) {
+    public PessoaDTO findById( ObjectId id) {
         logger.info("Buscando pessoa com o id: {}", id);
         var pessoa = pessoaRepository.findById( id )
                 .orElseThrow(() -> new PessoaNotFoundException("PessoaDTO com o id "+id+" não foi encontrada") );
