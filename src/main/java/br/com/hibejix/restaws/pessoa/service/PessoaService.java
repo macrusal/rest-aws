@@ -2,7 +2,10 @@ package br.com.hibejix.restaws.pessoa.service;
 
 import br.com.hibejix.restaws.pessoa.exception.PessoaNotFoundException;
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
+import br.com.hibejix.restaws.pessoa.model.dto.PessoaDTO;
 import br.com.hibejix.restaws.pessoa.repository.PessoaRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,48 +22,57 @@ public class PessoaService {
     private static final Logger logger = LoggerFactory.getLogger(PessoaService.class);
 
     private PessoaRepository pessoaRepository;
+    private ModelMapper modelMapper;
 
-    public PessoaService( PessoaRepository pessoaRepository ) {
+    public PessoaService( PessoaRepository pessoaRepository, ModelMapper modelMapper ) {
         this.pessoaRepository = pessoaRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public Pessoa create( Pessoa pessoa) {
-        logger.info( "Criando pessoa: {}", pessoa.toString() );
-        return pessoaRepository.save( pessoa );
+    public PessoaDTO create( PessoaDTO dto) {
+        logger.info( "Criando pessoa: {}", dto.toString() );
+        var pessoa = modelMapper.map( dto, Pessoa.class );
+        return modelMapper.map( pessoaRepository.save( pessoa ), PessoaDTO.class );
     }
 
-    public Pessoa update(Pessoa parametro) {
+    public PessoaDTO update(PessoaDTO parametro) {
 
-        var pessoa = findById( parametro.getId() );
+        var dto = findById( parametro.getId() );
         logger.info("Atualizando pessoa com o id: {}", parametro.getId());
 
-        return pessoaRepository.save( pessoa.builder()
-                .id( parametro.getId() )
-                .primeiroNome( parametro.getPrimeiroNome() )
-                .ultimoNome( parametro.getUltimoNome() )
-                .sexo( parametro.getSexo() )
-                .endereco( parametro.getEndereco() )
-                .build()
+        var entity = modelMapper.map(dto.builder()
+                        .id( parametro.getId() )
+                        .primeiroNome( parametro.getPrimeiroNome() )
+                        .ultimoNome( parametro.getUltimoNome() )
+                        .sexo( parametro.getSexo() )
+                        .endereco( parametro.getEndereco() )
+                        .build(), Pessoa.class
         );
+
+        return modelMapper.map( pessoaRepository.save( entity ), PessoaDTO.class );
     }
 
     public void delete( String id ) {
-        var pessoa = findById( id );
+        var dto = findById( id );
         logger.info("Excluindo pessoa com o id: {}", id);
+        var pessoa = modelMapper.map( dto, Pessoa.class );
         pessoaRepository.deleteById( pessoa.getId() );
     }
 
-    public Pessoa findById(String id) {
+    public PessoaDTO findById(String id) {
         logger.info("Buscando pessoa com o id: {}", id);
         var pessoa = pessoaRepository.findById( id )
-                .orElseThrow(() -> new PessoaNotFoundException("Pessoa com o id "+id+" não foi encontrada") );
-        return pessoa;
+                .orElseThrow(() -> new PessoaNotFoundException("PessoaDTO com o id "+id+" não foi encontrada") );
+        return modelMapper.map( pessoa, PessoaDTO.class );
     }
 
-    public List<Pessoa> findAll() {
+    public List<PessoaDTO> findAll() {
         var pessoas = pessoaRepository.findAll();
         logger.info("Retornnando {} pessoas do banco de dados", pessoas.stream().count());
-        return pessoas;
+
+        List<PessoaDTO> dtos = modelMapper.map(pessoas, new TypeToken<List<PessoaDTO>>() {}.getType());
+
+        return dtos;
     }
 
 }

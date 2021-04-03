@@ -1,26 +1,21 @@
-package br.com.hibejix.restaws.pessoa.model;
+package br.com.hibejix.restaws.pessoa.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * @author macrusal on 02/04/21
+ * @author macrusal on 03/04/21
  * @project rest-aws
  */
-@Builder
 @Data
+@Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Document(collection = "pessoa")
-public class Pessoa {
-
-    @Id
+public class PessoaDTO {
     private String id;
     private String primeiroNome;
     private String ultimoNome;
