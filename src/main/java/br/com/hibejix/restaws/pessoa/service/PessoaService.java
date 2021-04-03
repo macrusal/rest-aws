@@ -3,7 +3,6 @@ package br.com.hibejix.restaws.pessoa.service;
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -16,6 +15,18 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PessoaService {
 
     private final AtomicLong counter = new AtomicLong();
+
+    public Pessoa create(Pessoa pessoa) {
+        return pessoa;
+    }
+
+    public Pessoa update(Pessoa pessoa) {
+        return pessoa;
+    }
+
+    public void delete( String id ) {
+    }
+
     public Pessoa findById(String id) {
         var pessoa = Pessoa.builder()
                 .id(counter)
@@ -55,4 +66,5 @@ public class PessoaService {
 
         return Arrays.asList(pessoa1, pessoa2, pessoa3);
     }
+
 }
