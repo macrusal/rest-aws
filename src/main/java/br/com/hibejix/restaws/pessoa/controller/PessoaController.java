@@ -3,6 +3,7 @@ package br.com.hibejix.restaws.pessoa.controller;
 import br.com.hibejix.restaws.pessoa.model.dto.PessoaDTO;
 import br.com.hibejix.restaws.pessoa.service.PessoaService;
 import org.bson.types.ObjectId;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,22 +29,24 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
-    @RequestMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = {"application/json", "application/xml"})
     public PessoaDTO get( @PathVariable("id") ObjectId id ) {
         return pessoaService.findById( id );
     }
 
-    @GetMapping
+    @GetMapping(produces = {"application/json", "application/xml"})
     public List<PessoaDTO> getAll(  ) {
         return pessoaService.findAll( );
     }
 
-    @PostMapping
+    @PostMapping(produces = {"application/json", "application/xml"}
+               , consumes = {"application/json", "application/xml"})
     public PessoaDTO post( @RequestBody PessoaDTO pessoa ) {
         return pessoaService.create( pessoa );
     }
 
-    @PutMapping
+    @PutMapping(produces = {"application/json", "application/xml"},
+                consumes = {"application/json", "application/xml"})
     public PessoaDTO update( @RequestBody PessoaDTO pessoa ) {
         return pessoaService.update( pessoa );
     }
