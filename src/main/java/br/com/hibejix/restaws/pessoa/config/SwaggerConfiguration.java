@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -45,7 +46,7 @@ public class SwaggerConfiguration {
                 .directModelSubstitute(LocalDateTime.class, String.class)
                 .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.hibejix.restaws.pessoa.controller"))
+                .apis(RequestHandlerSelectors.basePackage("br.com.hibejix.restaws.pessoa"))
                 .paths(any())
                 .build();
     }
@@ -55,6 +56,8 @@ public class SwaggerConfiguration {
                 .title(apiName)
                 .description(apiDescription)
                 .version(version)
+                .contact( new Contact( "Hibejix Informática", "www.hibejix.com", "desenvolvimento@hibejix.com" ) )
+                .license( "MIT License" )
                 .build();
     }
 }

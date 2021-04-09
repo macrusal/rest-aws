@@ -11,8 +11,8 @@
     <groupId>br.com.hibejix</groupId>
     <artifactId>rest-aws</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rest-aws</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Rest-AWS</name>
+    <description>API Rest - AWS</description>
     <properties>
         <java.version>11</java.version>
     </properties>

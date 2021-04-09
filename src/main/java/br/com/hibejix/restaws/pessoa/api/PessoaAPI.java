@@ -15,7 +15,7 @@ import java.util.List;
  * @author macrusal on 03/04/21
  * @project rest-aws
  */
-@Api(tags = "Rest-AWS")
+@Api(tags = "Pessoa")
 public interface PessoaAPI {
 
     @ApiOperation(value = "Cadastrar pessoa", notes = "", httpMethod = "POST", produces = "application/json")
