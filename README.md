@@ -34,3 +34,5 @@ https://www.mongock.io/
 
 https://programmingtechie.com/2021/01/16/spring-boot-mongodb-migrations-using-mongock/
 
+# Swagger
+http://localhost:8080/swagger-ui.html#/Rest-AWS

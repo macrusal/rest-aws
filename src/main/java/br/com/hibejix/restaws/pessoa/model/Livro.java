@@ -12,10 +12,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
- * @author macrusal on 02/04/21
+ * @author macrusal on 04/04/21
  * @project rest-aws
  */
 @Builder
@@ -23,15 +24,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Document(collection = "pessoa")
-public class Pessoa {
+@Document(collection = "livro")
+public class Livro {
 
     @Id
     private ObjectId id;
-    private String primeiroNome;
-    private String ultimoNome;
-    private String endereco;
-    private String sexo;
+    private String autor;
+    private Date dataLancamento;
+    private Double preco;
+    private String titulo;
     @CreatedDate
     private Date dataCriacao;
     @LastModifiedDate
