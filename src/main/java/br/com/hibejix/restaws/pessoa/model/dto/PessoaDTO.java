@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.bson.types.ObjectId;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author macrusal on 03/04/21
  * @project rest-aws
@@ -18,7 +24,7 @@ import org.bson.types.ObjectId;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "nome", "sobrenome", "endereco", "sexo"})
+@JsonPropertyOrder({"id", "nome", "sobrenome", "endereco", "sexo", "senha", "perfis"})
 public class PessoaDTO {
     @JsonProperty("uid")
     private ObjectId id;
@@ -26,6 +32,11 @@ public class PessoaDTO {
     private String primeiroNome;
     @JsonProperty("sobrenome")
     private String ultimoNome;
+    @NotEmpty(message="Preenchimento obrigatório")
+    @Email(message="Email inválido")
+    private String email;
     private String endereco;
     private String sexo;
+    private String senha;
+    private List<String> perfis;
 }

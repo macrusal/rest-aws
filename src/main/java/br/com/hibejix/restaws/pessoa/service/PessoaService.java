@@ -3,15 +3,20 @@ package br.com.hibejix.restaws.pessoa.service;
 import br.com.hibejix.restaws.pessoa.exception.PessoaNotFoundException;
 import br.com.hibejix.restaws.pessoa.model.Pessoa;
 import br.com.hibejix.restaws.pessoa.model.dto.PessoaDTO;
+import br.com.hibejix.restaws.pessoa.model.enums.Perfil;
 import br.com.hibejix.restaws.pessoa.repository.PessoaRepository;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author macrusal on 02/04/21
@@ -21,6 +26,9 @@ import java.util.List;
 public class PessoaService {
 
     private static final Logger logger = LoggerFactory.getLogger(PessoaService.class);
+
+    @Autowired
+    private BCryptPasswordEncoder pe;
 
     private PessoaRepository pessoaRepository;
     private ModelMapper modelMapper;
@@ -33,6 +41,8 @@ public class PessoaService {
     public PessoaDTO create( PessoaDTO dto) {
         logger.info( "Criando pessoa: {}", dto.toString() );
         var pessoa = modelMapper.map( dto, Pessoa.class );
+        pessoa.setSenha( pe.encode( dto.getSenha() ) );
+        pessoa.addPerfil( Perfil.CLIENTE );
         return modelMapper.map( pessoaRepository.save( pessoa ), PessoaDTO.class );
     }
 
@@ -64,6 +74,7 @@ public class PessoaService {
         logger.info("Buscando pessoa com o id: {}", id);
         var pessoa = pessoaRepository.findById( id )
                 .orElseThrow(() -> new PessoaNotFoundException("PessoaDTO com o id "+id+" não foi encontrada") );
+
         return modelMapper.map( pessoa, PessoaDTO.class );
     }
 
@@ -72,6 +83,16 @@ public class PessoaService {
         logger.info("Retornnando {} pessoas do banco de dados", pessoas.stream().count());
 
         List<PessoaDTO> dtos = modelMapper.map(pessoas, new TypeToken<List<PessoaDTO>>() {}.getType());
+//        List<PessoaDTO> retorno = dtos.stream()
+//                .map( pessoa -> PessoaDTO.builder()
+//                    .endereco( pessoa.getEndereco() )
+//                    .primeiroNome( pessoa.getPrimeiroNome() )
+//                    .senha( pessoa.getSenha() )
+//                    .sexo( pessoa.getSexo() )
+//                    .ultimoNome( pessoa.getUltimoNome() )
+//                    .perfis( pessoa.getPerfis() )
+//                    .build() )
+//                .collect( Collectors.toList() );
 
         return dtos;
     }

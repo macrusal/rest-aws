@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -48,14 +49,14 @@ public class PessoaController implements PessoaAPI {
     @ApiOperation( "Cadastra uma pessoa" )
     @PostMapping(produces = {"application/json", "application/xml"}
                , consumes = {"application/json", "application/xml"})
-    public PessoaDTO post( @RequestBody PessoaDTO pessoa ) {
+    public PessoaDTO post( @Valid @RequestBody PessoaDTO pessoa ) {
         return pessoaService.create( pessoa );
     }
 
     @ApiOperation( "Atualiza uma pessoa" )
     @PutMapping(produces = {"application/json", "application/xml"},
                 consumes = {"application/json", "application/xml"})
-    public PessoaDTO update( @RequestBody PessoaDTO pessoa ) {
+    public PessoaDTO update( @Valid @RequestBody PessoaDTO pessoa ) {
         return pessoaService.update( pessoa );
     }
 
